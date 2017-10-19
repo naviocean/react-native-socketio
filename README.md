@@ -25,6 +25,7 @@ Kirkness added a super simple example app to /examples, copy and paste to your i
  * Pass in an optional config obj, this can include most of the
  * standard props supported by the swift library
  */
+import SocketIO from 'react-native-socketio';
 var socketConfig = { path: '/socket' };
 var socket = new SocketIO('localhost:3000', socketConfig);
 
