@@ -101,6 +101,7 @@ Optional:
 - `emit` - Emit an event to server
     - `@param` - String - Event name
     - `@param` - Anything - Data to be sent
+    - `@func`  - Callback function
 - `disconnect` - Close the connection
 - `reconnect` - Reconnect to a closed connection
 - `joinNamespace` - Manually join namespace
