@@ -5,7 +5,7 @@
 //  Created by Henry Kirkness on 10/05/2015.
 //  Copyright (c) 2015 Facebook. All rights reserved.
 //
-
+//  Updated on 24 Oct, 2017 by NaviOcean
 import Foundation
 
 @objc(SocketIO)
@@ -13,7 +13,8 @@ class SocketIO : RCTEventEmitter {
 
   var socket: SocketIOClient!
   var connectionSocket: NSURL!
-
+  var socketConfig: SocketIOClientConfiguration!
+  
   /**
   * Construct and expose RCTBridge to module
   */
@@ -30,10 +31,60 @@ class SocketIO : RCTEventEmitter {
   @objc(initialize:config:)
   func initialize(connection: NSString, config: NSDictionary) -> Void {
     connectionSocket = NSURL(string: String(connection));
+    socketConfig = [.log(false), .compress];
+    
+    for ( key, value) in config {
+      var option: Any?;
+      
+      switch key {
+        case "connectParams" :
+          option = SocketIOClientOption.connectParams( value as! [String : Any] );
+        case "doubleEncodeUTF8" :
+          option = SocketIOClientOption.doubleEncodeUTF8( value as! Bool );
+        case "extraHeaders" :
+          option = SocketIOClientOption.extraHeaders( value as! [String: String] );
+        case "forcePolling" :
+          option = SocketIOClientOption.forcePolling( value as! Bool );
+        case "forceNew" :
+          option = SocketIOClientOption.forceNew( value as! Bool );
+        case "forceWebsockets" :
+          option = SocketIOClientOption.forceWebsockets( value as! Bool );
+        case "log" :
+          option = SocketIOClientOption.log( value as! Bool );
+        case "nsp" :
+          option = SocketIOClientOption.nsp( value as! String );
+        case "path" :
+          option = SocketIOClientOption.path( value as! String );
+        case "reconnects" :
+          option = SocketIOClientOption.reconnects( value as! Bool );
+        case "reconnectAttempts" :
+          option = SocketIOClientOption.reconnectAttempts( value as! Int );
+        case "reconnectWait" :
+          option = SocketIOClientOption.reconnectWait( value as! Int );
+        case "secure" :
+          option = SocketIOClientOption.secure( value as! Bool );
+        case "selfSigned" :
+          option = SocketIOClientOption.selfSigned( value as! Bool );
+        case "voipEnabled" :
+          option = SocketIOClientOption.voipEnabled( value as! Bool );
+        default:
+          option = nil;
+      }
+      
+      if( option != nil ){
+        socketConfig.insert(option as! SocketIOClientOption );
+      }
+    }
+    if (self.socket != nil) {
+      self.socket.disconnect()
+      self.socket.removeAllHandlers()
+      self.socket = nil
+    }
+    
     // Connect to socket with config
     self.socket = SocketIOClient(
       socketURL: self.connectionSocket!,
-      config: config as NSDictionary?
+      config:socketConfig
     )
     
     // Initialize onAny events
