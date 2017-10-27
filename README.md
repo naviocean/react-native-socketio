@@ -3,13 +3,6 @@
 This project was forked from Kirkness' React Native Swift Socket.Io project
 [found here](https://github.com/kirkness/react-native-swift-socketio)
 
-Note: We are working on the following items:
-* Reviewing Pull requests and seeing if they are pertinent.
-* Making the project compatible with RN .33 
-* Making the project XCode 8 compatible.
-* Upgrading to Swift 2.3
-* Creating a simple test project
-
 This project now supports both iOS and Android using the same JS calls.
 * Exceptions:
  * The Android version does not support manual reconnects, joinNamespace, or leaveNamespace
@@ -122,18 +115,18 @@ $ npm install react-native-socketio
 ```
 
 #### iOS
-* Note as of May 19, 2016 that the path to the ios components has been moved from root to the /ios folder.
-- Open up your project in xcode and right click the package.
+1. Setup your Podfile like the included ios/Podfile, replace all references to testsocketrn with your project name, and then run pod install. 
+2. Open your project in Xcode workspace
 - Click **Add files to 'Your project name'**
-- Navigate to **/node_modules/react-native-socketio/ios/RNSwiftSocketIO**
+- Navigate to **/node_modules/react-native-socketio/ios/RNSocketIO**
 - Click 'Add'
 - Click your project in the navigator on the left and go to **build settings**
 - Search for **Objective-C Bridging Header**
 - Double click on the empty column
-- Enter **../node_modules/react-native-socketio/ios/RNSwiftSocketIO/SocketBridge.h**
+- Enter **../node_modules/react-native-socketio/ios/RNSocketIO/RNSocketIO-Bridging-Header.h**
 - Search for **Header Search Paths**
 - Double Click on the column (likely has other search paths in it already)
-- Enter this text at the bottom of the column $(SRCROOT)/../node_modules/react-native-socketio/ios/RNSwiftSocketIO
+- Enter this text at the bottom of the column $(SRCROOT)/../node_modules/react-native-socketio/ios/RNSocketIO
 
 #### Android
 

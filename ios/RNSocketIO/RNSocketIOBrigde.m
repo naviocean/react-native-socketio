@@ -1,12 +1,14 @@
 //
-//  SocketBridge.m
-//  RNSwiftSocketIO
+//  RNSocketIOBrigde.m
+//  testsocketrn
 //
-//  Created by Henry Kirkness on 10/05/2015.
-//  Copyright (c) 2015 Facebook. All rights reserved.
+//  Created by Duong Le on 10/26/17.
+//  Copyright © 2017 Facebook. All rights reserved.
 //
 
-#import "RCTEventEmitter.h"
+#import <Foundation/Foundation.h>
+#import <React/RCTBridgeModule.h>
+#import <React/RCTEventEmitter.h>
 
 @interface RCT_EXTERN_MODULE(SocketIO, RCTEventEmitter)
 
