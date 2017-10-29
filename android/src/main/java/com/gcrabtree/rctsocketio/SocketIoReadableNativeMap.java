@@ -2,9 +2,20 @@ package com.gcrabtree.rctsocketio;
 
 import android.util.Log;
 
+
 import com.facebook.jni.HybridData;
 import com.facebook.react.bridge.ReadableMapKeySetIterator;
 import com.facebook.react.bridge.ReadableNativeMap;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+
+import io.socket.client.IO;
+import io.socket.engineio.client.transports.Polling;
+
+
 
 import java.util.HashMap;
 
@@ -70,10 +81,10 @@ public class SocketIoReadableNativeMap extends ReadableNativeMap {
         IO.Options opts = new IO.Options();
 
         while (iterator.hasNextKey()) {
-            String key = iterator.nextKey().toLowerCase();
+            Map.Entry pair = (Map.Entry) iterator.next();
+            String key = pair.getKey().toString();
             switch (key) {
-                case "force new connection":
-                case "forcenew":
+                case "forceNew":
                     opts.forceNew = options.getBoolean(key);
                     break;
                 case "multiplex":
@@ -84,6 +95,18 @@ public class SocketIoReadableNativeMap extends ReadableNativeMap {
                     break;
                 case "connect_timeout":
                     opts.timeout = options.getInt(key);
+                    break;
+                case "reconnectionDelay":
+                    opts.reconnectionDelay = options.getInt(key);
+                    break;
+                case "reconnectionDelayMax":
+                    opts.reconnectionDelayMax = options.getInt(key);
+                    break;
+                case "forcePolling":
+                    opts.transports = new String[] {Polling.NAME};
+                    break;
+                case "query":
+                    opts.query = options.getString(key);
                     break;
                 default:
                     Log.e(TAG, "Could not convert object with key: " + key + ".");

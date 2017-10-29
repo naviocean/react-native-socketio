@@ -85,6 +85,8 @@ class Socket {
   }
 
   disconnect () {
+    this.handlers = {};
+    this.onAnyHandler = null;
     this.sockets.disconnect();
   }
 
