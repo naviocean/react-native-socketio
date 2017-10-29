@@ -1,6 +1,6 @@
 'use strict';
 
-import { DeviceEventEmitter, NativeModules, Platform } from 'react-native';
+import { DeviceEventEmitter, NativeEventEmitter,NativeModules, Platform } from 'react-native';
 let SocketIO = NativeModules.SocketIO;
 
 class Socket {
@@ -15,8 +15,14 @@ class Socket {
     this.isConnected = false;
     this.handlers = {};
     this.onAnyHandler = null;
+    if(Platform.OS == 'ios'){
+      const RNSocketIOManagerEmitter = new NativeEventEmitter(SocketIO);
+      const subscription = RNSocketIOManagerEmitter.addListener(
+        'socketEvent',
+        this._handleEvent.bind(this)
+      );
 
-    if(Platform.OS === "ios") this.sockets.addListener("socketEvent");
+    }
     this.deviceEventSubscription = DeviceEventEmitter.addListener(
       'socketEvent', this._handleEvent.bind(this)
     );
@@ -25,6 +31,7 @@ class Socket {
     this.defaultHandlers = {
       connect: () => {
         this.isConnected = true;
+
       },
 
       disconnect: () => {
@@ -37,6 +44,7 @@ class Socket {
   }
 
   _handleEvent (event) {
+    console.log(event)
     if (this.handlers.hasOwnProperty(event.name)) {
       this.handlers[event.name](
         (event.hasOwnProperty('items')) ? event.items : null
@@ -45,7 +53,7 @@ class Socket {
     if (this.defaultHandlers.hasOwnProperty(event.name)) {
       this.defaultHandlers[event.name]();
     }
-
+    
     if (this.onAnyHandler) this.onAnyHandler(event);
   }
 
