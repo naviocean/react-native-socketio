@@ -40,7 +40,8 @@ public class SocketIoReadableNativeMap extends ReadableNativeMap {
      * @return converted HashMap.
      */
     public static HashMap<String, Object> toHashMap(ReadableNativeMap map) {
-        ReadableMapKeySetIterator iterator = map.keySetIterator();
+        return map.toHashMap();
+        /*ReadableMapKeySetIterator iterator = map.keySetIterator();
         HashMap<String, Object> hashMap = new HashMap<>();
 
         while (iterator.hasNextKey()) {
@@ -68,7 +69,7 @@ public class SocketIoReadableNativeMap extends ReadableNativeMap {
                     throw new IllegalArgumentException("Could not convert object with key: " + key + ".");
             }
         }
-        return hashMap;
+        return hashMap;*/
     }
 
     /**
